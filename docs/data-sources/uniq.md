@@ -19,10 +19,16 @@ description: |-
 
 - `list` (List of String) Provided list of items to run against uniq
 
+### Optional
+
+- `fail_on_duplicate` (Boolean) Force data source failure upon presence of duplicates
+
 ### Read-Only
 
 - `duplicates` (List of String) List of duplicates found in original list
 - `id` (String) ID
+- `total_duplicates` (Number) Total number of duplicate items found in original list
+- `total_uniques` (Number) Total number of unique items found in original list
 - `uniques` (List of String) List of uniques found in original list
 
 
