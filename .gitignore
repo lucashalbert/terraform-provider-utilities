@@ -13,3 +13,10 @@
 
 # Dependency directories (remove the comment below to include it)
 # vendor/
+
+# Vi swap file
+*.swp
+
+# Build files and compiled binaries
+build/
+bin/
