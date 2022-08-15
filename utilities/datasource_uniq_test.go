@@ -18,6 +18,7 @@ data "utilities_uniq" "cidrs" {
 		"10.11.1.0/24",
 		"10.10.0.0/16"
 	]
+	fail_on_duplicate = false
 }
 `
 
@@ -59,12 +60,18 @@ func TestUniq(t *testing.T) {
 					// Check length of expected duplicates data structure
 					r.TestCheckResourceAttr("data.utilities_uniq.cidrs", "duplicates.#", fmt.Sprint(len(getUniqExpectedDuplicates()))),
 
+					// Check total duplicates returned by expected total_duplicates data structure
+					r.TestCheckResourceAttr("data.utilities_uniq.cidrs", "total_duplicates", fmt.Sprint(len(getUniqExpectedDuplicates()))),
+
 					// Validate all elements of the expected uniques data structure
 					r.TestCheckResourceAttr("data.utilities_uniq.cidrs", "duplicates.0", "10.10.0.0/16"),
 
 					// --- Check uniques Data Structure --- //
 					// Check length of expected uniques data structure
 					r.TestCheckResourceAttr("data.utilities_uniq.cidrs", "uniques.#", fmt.Sprint(len(getUniqExpectedUniques()))),
+
+					// Check total uniques returned by expected total_uniques data structure
+					r.TestCheckResourceAttr("data.utilities_uniq.cidrs", "total_uniques", fmt.Sprint(len(getUniqExpectedUniques()))),
 
 					// Validate all elements of the expected uniques data structure
 					r.TestCheckResourceAttr("data.utilities_uniq.cidrs", "uniques.0", "10.10.0.0/16"),
