@@ -2,6 +2,8 @@ package utilities
 
 import (
 	"context"
+	"encoding/json"
+	"fmt"
 	"reflect"
 
 	"github.com/google/uuid"
@@ -135,12 +137,22 @@ func dataSourceUniqRead(ctx context.Context, d *schema.ResourceData, m interface
 	// Always define the schema id value
 	d.SetId(uuid.New().String())
 
+	// Marshal the duplicates to JSON for readability
+	marshaledDuplicates, err := json.Marshal(duplicates)
+	if err != nil {
+		diags = append(diags, diag.Diagnostic{
+			Severity: diag.Error,
+			Summary:  "Error Marshaling 'duplicates' data",
+			Detail:   fmt.Sprintf("There was an error Marshaling the 'duplicates' data\n\nError = %s", err.Error()),
+		})
+	}
+
 	// Check if 'failOnDuplicate' boolean is true and if duplicates were returned
 	if failOnDuplicate && (duplicatesLen > 0) {
 		diags = append(diags, diag.Diagnostic{
 			Severity: diag.Error,
 			Summary:  "'total_duplicates' is greater than 0 while 'fail_on_duplicate' boolean is set to 'true'",
-			Detail:   "The total number of duplicates returned by data source is greater than 0 while the 'fail_on_duplicate' control boolean is set to 'true'",
+			Detail:   fmt.Sprintf("The total number of duplicates returned by data source is greater than 0 while the 'fail_on_duplicate' control boolean is set to 'true'\n\ntotal_duplicates = %d\nduplicates = %s", duplicatesLen, marshaledDuplicates),
 		})
 	}
 
