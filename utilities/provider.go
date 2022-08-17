@@ -10,6 +10,7 @@ func Provider() *schema.Provider {
 		ResourcesMap: map[string]*schema.Resource{},
 		DataSourcesMap: map[string]*schema.Resource{
 			"utilities_uniq": dataSourceUniq(),
+			"utilities_fail": dataSourceFail(),
 		},
 	}
 }
